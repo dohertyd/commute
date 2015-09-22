@@ -16,7 +16,7 @@
 
 @property (nonatomic, weak) id<IrisRailHTTPClientDelegate>delegate;
 
-// Singleton Pattern here !!
+// Singleton Pattern here 
 +(IrishRailHTTPClient *)sharedIrishRailHTTPClient;
 
 -(instancetype)initWithBaseURL:(NSURL *)url;

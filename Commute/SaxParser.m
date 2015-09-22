@@ -23,8 +23,8 @@
 
 -(NSArray *)parseTrainData:(NSXMLParser *)stationData direction:(NSString *)direction
 {
-    _ObjStationDataArray = [[NSMutableArray alloc] init];
-    _direction = direction;
+    self.ObjStationDataArray = [[NSMutableArray alloc] init];
+    self.direction = direction;
     
     stationData.delegate = self;
     [stationData setShouldProcessNamespaces:YES];
@@ -32,7 +32,7 @@
     // Start the parsing and fill out the array
     [stationData parse];
     
-    return _ObjStationDataArray;
+    return self.ObjStationDataArray;
 }
 
 
@@ -146,11 +146,11 @@
     else if ([qName isEqualToString:@"objStationData"] )
     {
         // Need to filter for selected direction
-        if ([self.currentObjStationData.Direction isEqualToString:_direction])
+        if ([self.currentObjStationData.Direction isEqualToString:self.direction])
         {
             // If this station Info for Dalkey Southbound then only want Trains
             // Going to GreyStones and not just to Bray!
-            if ([ _direction isEqualToString:@"Southbound"] && [self.currentObjStationData.Stationcode isEqualToString:@"DLKEY"])
+            if ([ self.direction isEqualToString:@"Southbound"] && [self.currentObjStationData.Stationcode isEqualToString:@"DLKEY"])
             {
                 if (![self.currentObjStationData.Destination isEqualToString:@"Greystones"])
                 {
@@ -159,7 +159,7 @@
             }
             // If this station Info for Greystones Southbound then only want Trains
             // Going to Rathdrum and not just to Bray!
-            if ([ _direction isEqualToString:@"Southbound"] && [self.currentObjStationData.Stationcode isEqualToString:@"GSTNS"])
+            if ([ self.direction isEqualToString:@"Southbound"] && [self.currentObjStationData.Stationcode isEqualToString:@"GSTNS"])
             {
                 if (![self.currentObjStationData.Destination isEqualToString:@"Rosslare Europort"])
                 {

@@ -51,23 +51,23 @@ static NSString * const greystonesStationCode = @"gstns";
 */
 - (IBAction)toggleDestButton:(UIButton *)sender
 {
-    if ([_startingStation isEqualToString:rathdrumStationString])
+    if ([self.startingStation isEqualToString:rathdrumStationString])
     {
-        _startingStation = dalkeyStationString;
-        _startingStationLabel.text = _startingStation;
+        self.startingStation = dalkeyStationString;
+        self.startingStationLabel.text = self.startingStation;
         
-        _destinationStation = destinationRathdrumString;
-        _destStationLabel.text = _destinationStation;
+        self.destinationStation = destinationRathdrumString;
+        self.destStationLabel.text = self.destinationStation;
     }
     else
     {
-        _startingStation = rathdrumStationString;
-        _startingStationLabel.text = _startingStation;
+        self.startingStation = rathdrumStationString;
+        self.startingStationLabel.text = self.startingStation;
         
-        _destinationStation = destinationDalkeyString;
-        _destStationLabel.text = _destinationStation;
+        self.destinationStation = destinationDalkeyString;
+        self.destStationLabel.text = self.destinationStation;
     }
-    [_myTableView reloadData];
+    [self.myTableView reloadData];
     [self refreshArrays];
     
 }
@@ -94,17 +94,17 @@ static NSString * const greystonesStationCode = @"gstns";
 {
     // Refresh the Arrays
     
-    if ([_startingStation isEqualToString:rathdrumStationString] ) // Northbound
+    if ([self.startingStation isEqualToString:rathdrumStationString] ) // Northbound
     {
-        //[_client updateTrainDataAtStation:dalkeyStationCode forNumberOfMinutes:90];
-        [_client updateTrainDataAtStation:greystonesStationCode forNumberOfMinutes:90];
-        [_client updateTrainDataAtStation:rathdrumStationCode forNumberOfMinutes:90];
+        //[self.client updateTrainDataAtStation:dalkeyStationCode forNumberOfMinutes:90];
+        [self.client updateTrainDataAtStation:greystonesStationCode forNumberOfMinutes:90];
+        [self.client updateTrainDataAtStation:rathdrumStationCode forNumberOfMinutes:90];
     }
     else // Southbound
     {
-        [_client updateTrainDataAtStation:dalkeyStationCode forNumberOfMinutes:90];
-        [_client updateTrainDataAtStation:greystonesStationCode forNumberOfMinutes:90];
-        //[_client updateTrainDataAtStation:rathdrumStationCode forNumberOfMinutes:90];
+        [self.client updateTrainDataAtStation:dalkeyStationCode forNumberOfMinutes:90];
+        [self.client updateTrainDataAtStation:greystonesStationCode forNumberOfMinutes:90];
+        //[self.client updateTrainDataAtStation:rathdrumStationCode forNumberOfMinutes:90];
     }
 }
 
@@ -118,7 +118,7 @@ static NSString * const greystonesStationCode = @"gstns";
 {
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_client.reachabilityManager stopMonitoring];
+    [self.client.reachabilityManager stopMonitoring];
 }
 - (void)viewDidLoad
 {
@@ -127,7 +127,7 @@ static NSString * const greystonesStationCode = @"gstns";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshArrays)
                                    name:UIApplicationWillEnterForegroundNotification object:nil];
     
-    _myTableView.allowsSelection = NO; // Disable selection Highlighting
+    self.myTableView.allowsSelection = NO; // Disable selection Highlighting
     
 //    // Keep an eye on network connectivity
 //    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status)
@@ -136,24 +136,24 @@ static NSString * const greystonesStationCode = @"gstns";
 //    }];
     
     // Initialize UI and Properties
-    _startingStation = dalkeyStationString;
-    _startingStationLabel.text = _startingStation;
-    _destinationStation = destinationRathdrumString;
-    _destStationLabel.text = _destinationStation;
+    self.startingStation = dalkeyStationString;
+    self.startingStationLabel.text = self.startingStation;
+    self.destinationStation = destinationRathdrumString;
+    self.destStationLabel.text = self.destinationStation;
     
-    _updateTimeLabel.text = @"Not Updated";
+    self.updateTimeLabel.text = @"Not Updated";
     
 
-    _stationsOfInterestNorthbound = [[NSMutableDictionary alloc] init ];
-    _stationsOfInterestSouthbound = [[NSMutableDictionary alloc] init ];
+    self.stationsOfInterestNorthbound = [[NSMutableDictionary alloc] init ];
+    self.stationsOfInterestSouthbound = [[NSMutableDictionary alloc] init ];
     
     // Make this ViewCopntroller a Delegate of the Networking HTTP CLient
-    _client = [IrishRailHTTPClient sharedIrishRailHTTPClient];
-    _client.delegate = self;
+    self.client = [IrishRailHTTPClient sharedIrishRailHTTPClient];
+    self.client.delegate = self;
     
     
-    NSOperationQueue *operationQueue = _client.operationQueue;
-    [_client.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status)
+    NSOperationQueue *operationQueue = self.client.operationQueue;
+    [self.client.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status)
     {
         NSLog(@"Reachability: %@", AFStringFromNetworkReachabilityStatus(status));
         switch (status) {
@@ -168,7 +168,7 @@ static NSString * const greystonesStationCode = @"gstns";
         }
     }];
     
-    [_client.reachabilityManager  startMonitoring];
+    [self.client.reachabilityManager  startMonitoring];
     
    // [self refreshArrays];
 }
@@ -183,26 +183,26 @@ static NSString * const greystonesStationCode = @"gstns";
     NSXMLParser * XMLParser = (NSXMLParser *)trainData;
     __block NSArray * ar;
     
-    _updateTimeLabel.text = [self getUpdateTimeString];
+    self.updateTimeLabel.text = [self getUpdateTimeString];
     
     
-    if ([_startingStation isEqualToString:rathdrumStationString] )
+    if ([self.startingStation isEqualToString:rathdrumStationString] )
     {
         SaxParser * sp = [ [SaxParser alloc ] init ];
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0),
         ^{
             ar = [sp parseTrainData:XMLParser direction:@"Northbound"];
-            _stationsOfInterestNorthbound[stationCode] = ar;
-            NSLog(@"%@", _stationsOfInterestNorthbound);
+            self.stationsOfInterestNorthbound[stationCode] = ar;
+            NSLog(@"%@", self.stationsOfInterestNorthbound);
                            
             dispatch_async(dispatch_get_main_queue(),
             ^{
-                [_myTableView reloadData];
+                [self.myTableView reloadData];
             });
         });
     }
-    else if ([_startingStation isEqualToString:dalkeyStationString])
+    else if ([self.startingStation isEqualToString:dalkeyStationString])
     {
         SaxParser * sp = [ [SaxParser alloc ] init ];
         
@@ -213,19 +213,19 @@ static NSString * const greystonesStationCode = @"gstns";
 //        NSLog(@"Time To Parse SB Data: %f", end2 - start2);
 //        
 //        // Update Dictionary
-//        _stationsOfInterestSouthbound[stationCode] = ar;
-//        //NSLog(@"%@", _stationsOfInterestSouthbound);
-//        [_myTableView reloadData];
+//        self.stationsOfInterestSouthbound[stationCode] = ar;
+//        //NSLog(@"%@", self.stationsOfInterestSouthbound);
+//        [self.myTableView reloadData];
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0),
         ^{
             ar = [sp parseTrainData:XMLParser direction:@"Southbound"];
-            _stationsOfInterestSouthbound[stationCode] = ar;
-            NSLog(@"%@", _stationsOfInterestSouthbound);
+            self.stationsOfInterestSouthbound[stationCode] = ar;
+            NSLog(@"%@", self.stationsOfInterestSouthbound);
                            
             dispatch_async(dispatch_get_main_queue(),
             ^{
-                        [_myTableView reloadData];
+                        [self.myTableView reloadData];
             });
         });
     }
@@ -233,7 +233,7 @@ static NSString * const greystonesStationCode = @"gstns";
 
 -(void)IrishRailHTTPClient:(IrishRailHTTPClient *)client didFailWithError:(NSError *)error
 {
-    [_myTableView reloadData];
+    [self.myTableView reloadData];
     NSLog(@"Problem Loading Train Information");
 }
 
@@ -266,7 +266,7 @@ static NSString * const greystonesStationCode = @"gstns";
     NSString * leg1String;
     NSString * leg2String;
     
-    if ( [_startingStation isEqualToString:rathdrumStationString] ) // Northbound
+    if ( [self.startingStation isEqualToString:rathdrumStationString] ) // Northbound
     {
         leg1String = @"Rathdrum to Greystones Departures ...";
         leg2String = @"Greystones to Dalkey Departures ...";
@@ -292,15 +292,15 @@ static NSString * const greystonesStationCode = @"gstns";
 {
     NSArray * arr1, *arr2;
     
-    if ( [_startingStation isEqualToString:rathdrumStationString] ) // Northbound
+    if ( [self.startingStation isEqualToString:rathdrumStationString] ) // Northbound
     {
-        arr1 = _stationsOfInterestNorthbound[rathdrumStationCode];
-        arr2 = _stationsOfInterestNorthbound[greystonesStationCode];
+        arr1 = self.stationsOfInterestNorthbound[rathdrumStationCode];
+        arr2 = self.stationsOfInterestNorthbound[greystonesStationCode];
     }
     else // Southbound
     {
-        arr1 = _stationsOfInterestSouthbound[dalkeyStationCode];
-        arr2 = _stationsOfInterestSouthbound[greystonesStationCode];
+        arr1 = self.stationsOfInterestSouthbound[dalkeyStationCode];
+        arr2 = self.stationsOfInterestSouthbound[greystonesStationCode];
     }
     
     switch (section)
@@ -330,15 +330,15 @@ static NSString * const greystonesStationCode = @"gstns";
     
     NSArray * arr1, *arr2;
     
-    if ( [_startingStation isEqualToString:rathdrumStationString] )
+    if ( [self.startingStation isEqualToString:rathdrumStationString] )
     {
-        arr1 = _stationsOfInterestNorthbound[rathdrumStationCode];
-        arr2 = _stationsOfInterestNorthbound[greystonesStationCode];
+        arr1 = self.stationsOfInterestNorthbound[rathdrumStationCode];
+        arr2 = self.stationsOfInterestNorthbound[greystonesStationCode];
     }
     else
     {
-        arr1 = _stationsOfInterestSouthbound[dalkeyStationCode];
-        arr2 = _stationsOfInterestSouthbound[greystonesStationCode];
+        arr1 = self.stationsOfInterestSouthbound[dalkeyStationCode];
+        arr2 = self.stationsOfInterestSouthbound[greystonesStationCode];
     }
     
     ObjStationData * obsd;
