@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		50F1B40B2CCAD03E541D1EC0 /* libPods-Commute.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0359D6297D7AB0CB1E692AA0 /* libPods-Commute.a */; };
+		BE15A59C1BB1EF3D00CD56AD /* Globals.m in Sources */ = {isa = PBXBuildFile; fileRef = BE15A59B1BB1EF3D00CD56AD /* Globals.m */; settings = {ASSET_TAGS = (); }; };
 		BEEE874D1B13CB350038602E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE874C1B13CB350038602E /* main.m */; };
 		BEEE87501B13CB350038602E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE874F1B13CB350038602E /* AppDelegate.m */; };
 		BEEE87531B13CB350038602E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE87521B13CB350038602E /* ViewController.m */; };
@@ -34,6 +35,8 @@
 		0359D6297D7AB0CB1E692AA0 /* libPods-Commute.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Commute.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B46E5A0897635CF4B73090B /* Pods-Commute.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Commute.release.xcconfig"; path = "Pods/Target Support Files/Pods-Commute/Pods-Commute.release.xcconfig"; sourceTree = "<group>"; };
 		A55750AD824EC468D6DEF84F /* Pods-Commute.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Commute.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Commute/Pods-Commute.debug.xcconfig"; sourceTree = "<group>"; };
+		BE15A59A1BB1EF3D00CD56AD /* Globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Globals.h; sourceTree = "<group>"; };
+		BE15A59B1BB1EF3D00CD56AD /* Globals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Globals.m; sourceTree = "<group>"; };
 		BEEE87471B13CB350038602E /* Commute.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Commute.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEEE874B1B13CB350038602E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BEEE874C1B13CB350038602E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -151,6 +154,8 @@
 		BEEE87AD1B14FCC30038602E /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
+				BE15A59A1BB1EF3D00CD56AD /* Globals.h */,
+				BE15A59B1BB1EF3D00CD56AD /* Globals.m */,
 				BEEE87B01B14FE150038602E /* SaxParser.h */,
 				BEEE87B11B14FE150038602E /* SaxParser.m */,
 				BEEE87B31B151E9B0038602E /* ObjStationData.h */,
@@ -313,6 +318,7 @@
 			files = (
 				BEEE87B51B151E9B0038602E /* ObjStationData.m in Sources */,
 				BEEE87531B13CB350038602E /* ViewController.m in Sources */,
+				BE15A59C1BB1EF3D00CD56AD /* Globals.m in Sources */,
 				BEEE87AC1B14B7EB0038602E /* IrishRailHTTPClient.m in Sources */,
 				BEEE87B21B14FE150038602E /* SaxParser.m in Sources */,
 				BEEE87501B13CB350038602E /* AppDelegate.m in Sources */,
