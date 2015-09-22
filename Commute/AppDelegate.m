@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "AFNetworkActivityIndicatorManager.h"
 #import "AFNetworkReachabilityManager.h"
+#import "Globals.h"
 
 @interface AppDelegate ()
 
@@ -23,10 +24,52 @@
     // Instantiate Shared Manager
     //[AFNetworkReachabilityManager sharedManager];
     
+    [Globals setStartStation:@"Dalkey"];
+    [Globals setInterStation:@"Greystones"];
+    [Globals setDestStation:@"Rathdrum"];
+    
+    
+    //
+    // Lifted from StackOverflow, how to register for push
+    // in a backwards compatible way for IOS 8 and IOS 7
+    //
+    /*
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
+        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    } else {
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+         (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+    }
+    */
+    
+    
     // Override point for customization after application launch.
     return YES;
 }
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
+    NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken () , \nMy token is: %@", deviceToken);
+    
+#ifdef DEBUG
+    NSLog(@"Sending push token to Server for Development Pushes!");
+#else
+    NSLog(@"Sending push token to  Server for Production Pushes!");
+#endif
+}
 
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    NSLog(@"Failed to register for remote notifications: %@", error);
+}
+
+- (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo  fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+        NSLog(@"Received Push Notification(Routing to Golgi): %@", userInfo);
+
+        NSLog(@"Received Push Notification(Routing to App");
+        completionHandler(UIBackgroundFetchResultNoData);
+}
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.

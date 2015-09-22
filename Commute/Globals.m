@@ -10,6 +10,7 @@
 
 // We store our settings in the NSUserDefaults dictionary using these keys
 static NSString* const StartStationKey = @"StartStationKey";
+static NSString* const InterStationKey = @"InterStationKey";
 static NSString* const DestStationKey = @"DestStationKey";
 
 @interface Globals()
@@ -23,7 +24,7 @@ static NSString* const DestStationKey = @"DestStationKey";
 
 @implementation Globals
 
-+(Globals *)sharedInstance
++(instancetype)sharedInstance
 {
     static Globals * sharedInstance = nil;
     static dispatch_once_t onceToken;
@@ -31,7 +32,7 @@ static NSString* const DestStationKey = @"DestStationKey";
     dispatch_once(&onceToken, ^{
         sharedInstance = [[self alloc] init ];
         // Register default values for our settings
-        [[NSUserDefaults standardUserDefaults] registerDefaults:@{StartStationKey: @"", DestStationKey: @""}];
+        [[NSUserDefaults standardUserDefaults] registerDefaults:@{StartStationKey: @"", DestStationKey: @"", InterStationKey: @""}];
     });
     
     return sharedInstance;
@@ -60,6 +61,28 @@ static NSString* const DestStationKey = @"DestStationKey";
 }
 
 
+-(void)setInterStation:(NSString *)_interStation
+{
+    interStation = _interStation;
+    [[NSUserDefaults standardUserDefaults]  setObject:_interStation forKey:InterStationKey];
+}
++(void)setInterStation:(NSString *)interStation
+{
+    [[Globals sharedInstance] setInterStation:interStation];
+}
+
+-(NSString *)getInterStation
+{
+    NSString * is = [[NSUserDefaults standardUserDefaults] objectForKey:InterStationKey];
+    interStation = is;
+    return interStation;
+}
++(NSString *)getInterStation
+{
+    return [[Globals sharedInstance] getInterStation];
+}
+
+
 
 
 -(void)setDestStation:(NSString *)_destStation
@@ -74,8 +97,8 @@ static NSString* const DestStationKey = @"DestStationKey";
 
 -(NSString *)getDestStation
 {
-    NSString * ss = [[NSUserDefaults standardUserDefaults] objectForKey:DestStationKey];
-    destStation = ss;
+    NSString * ds = [[NSUserDefaults standardUserDefaults] objectForKey:DestStationKey];
+    destStation = ds;
     return destStation;
 }
 +(NSString *)getDestStation

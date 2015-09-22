@@ -16,13 +16,19 @@
 {
     NSString * startStation;
     NSString * destStation;
+    NSString * interStation;
 }
+
++(instancetype)sharedInstance;
 
 +(NSString *)getStartStation;
 +(void)setStartStation:(NSString *)startStation;
 
 +(NSString *)getDestStation;
 +(void)setDestStation:(NSString *)destStation;
+
++(NSString *)getInterStation;
++(void)setInterStation:(NSString *)interStation;
 
 
 @end
